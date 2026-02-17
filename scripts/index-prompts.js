@@ -33,6 +33,7 @@ const SKIP = new Set([
   "package-lock.json",
   "next.config.js",
   "next.config.mjs",
+  "next-env.d.ts",
   "tailwind.config.ts",
   "tailwind.config.js",
   "postcss.config.js",
@@ -154,8 +155,9 @@ function buildIndex() {
 
   for (const entry of entries) {
     if (SKIP.has(entry.name)) continue;
-    // Skip hidden files/dirs
+    // Skip hidden files/dirs and TypeScript declaration files
     if (entry.name.startsWith(".")) continue;
+    if (entry.name.endsWith(".d.ts")) continue;
 
     const fullPath = path.join(REPO_ROOT, entry.name);
     const title = entry.name.replace(/-/g, " ").replace(/_/g, " ");

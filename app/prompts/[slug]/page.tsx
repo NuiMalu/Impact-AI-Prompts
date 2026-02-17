@@ -23,9 +23,10 @@ export async function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
-  const prompt = prompts.find((p) => p.slug === params.slug);
+  const { slug } = await params;
+  const prompt = prompts.find((p) => p.slug === slug);
   if (!prompt) return {};
   return {
     title: `${prompt.title} — AI Impact Prompt Library`,
@@ -33,12 +34,13 @@ export async function generateMetadata({
   };
 }
 
-export default function PromptPage({
+export default async function PromptPage({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
-  const prompt = prompts.find((p) => p.slug === params.slug);
+  const { slug } = await params;
+  const prompt = prompts.find((p) => p.slug === slug);
   if (!prompt) notFound();
 
   const colorClass =
